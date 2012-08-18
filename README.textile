@@ -42,8 +42,8 @@ This gives @Person@ basic CRUD methods: @save()@, @destroy()@, @findOne()@, and 
 Every class automatically gets mapped to a Mongo collection by convention.
 
 E.g.
-@Person@ -> @people@
-@MyClass@ -> @my_classes@
+@Person@ -> @person@
+@MyClass@ -> @myclass@
 
 It is possible to set collection name manualy for child class.
 You can do it by overriding class name as in example.
@@ -51,7 +51,7 @@ You can do it by overriding class name as in example.
 pre.. 
 class PersonClassNameIsTooComplicated extends BaseMongoRecord
 {
-    protected static $collectionName = 'person';
+    protected static $collectionName = 'people';
 }
 
 h3. Creating and Fetching
@@ -138,3 +138,4 @@ Because of this, 2.x is *not* backwards compatible with 1.x, since the result of
 h3. Credits
 
 Thanks to Rasmus for the suggestion for lazy find().
+
