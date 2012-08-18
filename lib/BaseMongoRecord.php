@@ -2,7 +2,6 @@
 
 require_once('MongoRecord.php');
 require_once('MongoRecordIterator.php');
-require_once('Inflector.php');
 
 abstract class BaseMongoRecord
 	implements MongoRecord
@@ -161,15 +160,15 @@ abstract class BaseMongoRecord
 
 	public function __call($method, $arguments)
 	{
+		$lowerMethod = strtolower($method);
 		// Is this a get or a set
-		$prefix = strtolower(substr($method, 0, 3));
+		$prefix = substr($lowerMethod, 0, 3);
 
 		if ($prefix != 'get' && $prefix != 'set')
 			return;
 
 		// What is the get/set class attribute
-		$inflector = Inflector::getInstance();
-		$property = $inflector->underscore(substr($method, 3));
+		$property = substr($lowerMethod, 3);
 
 		if (empty($prefix) || empty($property))
 		{
@@ -240,8 +239,8 @@ abstract class BaseMongoRecord
 		}
 		else
 		{
-			$inflector = Inflector::getInstance();
-			$collectionName = $inflector->tableize($className);
+			$trimmed = (substr($className, -5) === 'Model') ? substr($className, 0, -5) : $className;
+			$collectionName = strtolower($trimmed);
 		}
 
 		if ($className::$database == null)
