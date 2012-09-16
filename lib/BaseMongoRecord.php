@@ -232,6 +232,7 @@ abstract class BaseMongoRecord
 	protected static function getCollection()
 	{
 		$className = get_called_class();
+		self::setupDatabase($className);
 
 		if (null !== static::$collectionName)
 		{
@@ -243,6 +244,11 @@ abstract class BaseMongoRecord
 			$collectionName = strtolower($trimmed);
 		}
 
+		return $className::$connection->selectCollection($className::$database, $collectionName);
+	}
+
+	protected static function setupDatabase($className)
+	{
 		if ($className::$database == null)
 			throw new Exception("BaseMongoRecord::database must be initialized to a proper database string");
 
@@ -251,8 +257,6 @@ abstract class BaseMongoRecord
 
 		if (!($className::$connection->connected))
 			$className::$connection->connect();
-
-		return $className::$connection->selectCollection($className::$database, $collectionName);
 	}
 
 	public static function setFindTimeout($timeout)
